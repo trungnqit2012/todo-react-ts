@@ -1,15 +1,15 @@
 import type { Todo } from "../types/todo";
 
-const BASE_URL = "https://todo-react-ts-ten-alpha.vercel.app";
+const BASE_URL = "/api/todos";
 
 export async function fetchTodos(): Promise<Todo[]> {
-  const res = await fetch(`${BASE_URL}/todos`);
+  const res = await fetch(BASE_URL);
   if (!res.ok) throw new Error("Failed to fetch todos");
   return res.json();
 }
 
 export async function createTodo(title: string): Promise<Todo> {
-  const res = await fetch(`${BASE_URL}/todos`, {
+  const res = await fetch(BASE_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title }),
@@ -19,10 +19,10 @@ export async function createTodo(title: string): Promise<Todo> {
 }
 
 export async function toggleTodo(
-  id: number,
+  id: string,
   completed: boolean
 ): Promise<Todo> {
-  const res = await fetch(`${BASE_URL}/todos/${id}`, {
+  const res = await fetch(`${BASE_URL}/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ completed }),
@@ -31,8 +31,8 @@ export async function toggleTodo(
   return res.json();
 }
 
-export async function deleteTodo(id: number): Promise<void> {
-  const res = await fetch(`${BASE_URL}/todos/${id}`, {
+export async function deleteTodo(id: string): Promise<void> {
+  const res = await fetch(`${BASE_URL}/${id}`, {
     method: "DELETE",
   });
   if (!res.ok) throw new Error("Failed to delete todo");
